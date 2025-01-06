@@ -73,7 +73,7 @@ class BimbinganController extends Controller
     {
         $data = $request->validate([
             'tanggal' => 'required|date',
-            'jam' => 'required|date_format:H:i:s',
+            'jam' => 'required|date_format:H:i',
             'dosen_id' => 'required|exists:dosens,id',
             'mahasiswa_id' => 'required|exists:mahasiswas,id',
             'lokasi' => 'required|string|max:255',

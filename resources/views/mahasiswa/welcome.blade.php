@@ -221,13 +221,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Beranda</a>
+              <a class="nav-link" href="{{ url('/mahasiswa') }}">Beranda</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Pengajuan Jadwal</a>
+              <a class="nav-link" href="#pengajuan">Pengajuan Jadwal</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Jadwal Bimbingan</a>
+              <a class="nav-link" href="#jadwal">Jadwal Bimbingan</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Schedule Tugas</a>
@@ -270,9 +270,9 @@
       <div class="info-card-container" style="position: relative; border-radius: 5px; padding: 15px; background-color:white; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
         <div class="info-card" style="max-height: 350px; overflow-y: scroll;">
             @forelse ($bimbingans as $bmb)
-                <h5>Pengajuan Jadwal Bimbingan</h5>
+                <h5 id="pengajuan">Pengajuan Jadwal Bimbingan</h5>
                 <p>Tanggal Bimbingan: {{ $bmb->tanggal }}</p>
-                <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</p>
+                <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i', $bmb->jam)->format('H:i') }}</p>
                 <p>Dosen: {{ $bmb->dosen->nama }}</p>
                 <p>Mahasiswa: {{ $bmb->mahasiswa->nama }}</p>
                 <p>Lokasi: {{ $bmb->lokasi }}</p>
@@ -298,14 +298,14 @@
 
     <div class="info-card-container" style="position: relative; border-radius: 5px; padding: 15px; background-color:white; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
       <div class="info-card" style="max-height: 350px; overflow-y: scroll;">
-          @forelse ($bimbingans as $bmb)
-              <h5>Jadwal Bimbingan</h5>
-              <p>Tanggal Bimbingan: {{ $bmb->tanggal }}</p>
-              <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</p>
-              <p>Dosen: {{ $bmb->dosen->nama }}</p>
-              <p>Mahasiswa: {{ $bmb->mahasiswa->nama }}</p>
-              <p>Lokasi: {{ $bmb->lokasi }}</p>
-              <p>Topik: {{ $bmb->topik }}</p>
+          @forelse ($approvedBimbingans as $bimbi)
+              <h5 id="jadwal">Jadwal Bimbingan</h5>
+              <p>Tanggal Bimbingan: {{ $bimbi->tanggal }}</p>
+              <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i', $bimbi->jam)->format('H:i') }}</p>
+              <p>Dosen: {{ $bimbi->dosen->nama }}</p>
+              <p>Mahasiswa: {{ $bimbi->mahasiswa->nama }}</p>
+              <p>Lokasi: {{ $bimbi->lokasi }}</p>
+              <p>Topik: {{ $bimbi->topik }}</p>
               <hr>
           @empty
               <p>Tidak ada jadwal bimbingan yang ditemukan.</p>
@@ -329,7 +329,7 @@
           </div>
           <div class="modal-body">
             <div class="card-body">
-              <form action="{{ route('bimbingans.store') }}" method="POST">
+              <form action="{{ route('welcome.store') }}" method="POST">
                   <div class="alert alert-danger">
                       <ul>
                           @foreach ($errors->all() as $error)
@@ -398,6 +398,7 @@
         </div>
       </div>
     </div>
+
 
 
     <!-- Footer -->

@@ -64,6 +64,7 @@ Route::middleware(['auth', RedirectRole::class . ':dosen'])
     ->group(function () {
         Route::get('/', [DosenDashboardController::class, 'index'])->name('dashboardd');
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwals.index');
+
         Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwals.create');
         Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('jadwals.store');
         Route::get('/jadwal/{id}/edit', [JadwalController::class, 'edit'])->name('jadwals.edit');
@@ -78,8 +79,7 @@ Route::middleware(['auth', RedirectRole::class . ':mahasiswa'])
     ->prefix('mahasiswa')
     ->group(function () {
         Route::get('/', [MhsDashboardController::class, 'index'])->name('welcome');
-        Route::get('/bimbingan', [MhsDashboardController::class, 'index'])->name('bimbingans.index');
-        Route::post('/bimbingan', [BimbinganMahasiswaController::class, 'store'])->name('bimbingans.store');
-
+        Route::get('/create', [MhsDashboardController::class, 'create'])->name('welcome.create');
+        Route::post('/store', [MhsDashboardController::class, 'store'])->name('welcome.store');
 });
 require __DIR__ . '/auth.php';

@@ -19,4 +19,9 @@ class Bimbingan extends Model
     public function mahasiswa() {
         return $this->belongsTo(Mahasiswa::class);
     }
+
+    public function getJamAttribute($value)
+    {
+        return \Carbon\Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
 }

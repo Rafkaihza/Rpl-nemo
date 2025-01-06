@@ -21,6 +21,13 @@ class DashboardController extends Controller
     // Ambil pengajuan bimbingan berdasarkan mahasiswa yang login
     $bimbingans = $mahasiswa ? $mahasiswa->bimbingans()->with(['dosen'])->get() : collect();
 
+    $approvedBimbingans = $mahasiswa 
+        ? Bimbingan::where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'setuju')
+            ->with(['dosen', 'mahasiswa'])
+            ->get()
+        : collect();
+
     // Data tambahan
     $dosens = Dosen::all();
     $mahasiswas = Mahasiswa::all(); // Ambil semua data mahasiswa, jika diperlukan
@@ -29,7 +36,7 @@ class DashboardController extends Controller
 
     
 
-    return view('mahasiswa.welcome', compact('bimbingans', 'dosens', 'mahasiswas'));
+    return view('mahasiswa.welcome', compact('bimbingans', 'dosens', 'mahasiswas', 'approvedBimbingans'));
 }
 
     public function create()
@@ -57,10 +64,10 @@ class DashboardController extends Controller
         try {
             Bimbingan::create($data);
             DB::commit();
-            return redirect()->route('bimbingans.index')->with('success', 'Data berhasil disimpan');
+            return redirect()->route('welcome')->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('bimbingans.index')->with('error', 'Terjadi kesalahan saat menyimpan data');
+            return redirect()->route('welcome')->with('error', 'Terjadi kesalahan saat menyimpan data');
         }
     }
     

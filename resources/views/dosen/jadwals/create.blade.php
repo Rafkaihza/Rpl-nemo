@@ -26,6 +26,13 @@
 
                                 <div class="card-body">
                                     <form action="{{ route('jadwals.store') }}" method="POST">
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                         @csrf
                                         <div class="form-group row mb-3 align-items-center">
                                             <label for="tanggal" class="col-2 col-form-label">Tanggal</label>

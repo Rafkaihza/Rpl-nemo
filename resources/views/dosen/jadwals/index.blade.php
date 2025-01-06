@@ -38,7 +38,7 @@
                                                 <tr class="text-center bg-primary text-white">
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $bimbingan->tanggal }}</td>
-                                                    <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $bimbingan->jam)->format('H:i') }}</td>
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('H:i', $bimbingan->jam)->format('H:i') }}</td>
                                                     <td>{{ $bimbingan->dosen->nama }}</td>
                                                     <td>{{ $bimbingan->mahasiswa->nama }}</td>
                                                     <td>{{ $bimbingan->lokasi }}</td>
@@ -91,7 +91,7 @@
                                                     <tr class="text-center bg-primary text-white">
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $bmb->tanggal }}</td>
-                                                        <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</td>
+                                                        <td>{{ \Carbon\Carbon::createFromFormat('H:i', $bmb->jam)->format('H:i') }}</td>
                                                         <td>{{ $bmb->dosen->nama }}</td>
                                                         <td>{{ $bmb->mahasiswa->nama }}</td>
                                                         <td>{{ $bmb->lokasi }}</td>
