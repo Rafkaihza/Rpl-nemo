@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class BimbinganMahasiswaController extends Controller
 {
     public function index()
 {
@@ -24,10 +24,6 @@ class DashboardController extends Controller
     // Data tambahan
     $dosens = Dosen::all();
     $mahasiswas = Mahasiswa::all(); // Ambil semua data mahasiswa, jika diperlukan
-
-    
-
-    
 
     return view('mahasiswa.welcome', compact('bimbingans', 'dosens', 'mahasiswas'));
 }

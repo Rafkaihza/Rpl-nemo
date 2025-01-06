@@ -7,15 +7,33 @@ use App\Models\Bimbingan;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class JadwalController extends Controller
 {
     public function index()
-    {
-        $bimbingans = Bimbingan::with(['dosen', 'mahasiswa'])->get();
-        return view('dosen.jadwals.index', compact('bimbingans'));
+{
+    // Ambil dosen yang sedang login
+    $dosen = Auth::user()->dosen;
+
+    if (!$dosen) {
+        return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke jadwal.');
     }
+
+    // Ambil semua jadwal bimbingan yang terkait dengan dosen
+    $bimbingans = Bimbingan::where('dosen_id', $dosen->id)
+        ->with(['dosen', 'mahasiswa'])
+        ->get();
+
+    // Ambil hanya jadwal bimbingan yang disetujui
+    $approvedBimbingans = Bimbingan::where('dosen_id', $dosen->id)
+        ->where('status', 'setuju')
+        ->with(['dosen', 'mahasiswa'])
+        ->get();
+
+    return view('dosen.jadwals.index', compact('bimbingans', 'approvedBimbingans'));
+}
 
     /**
      * Show the form for creating a new resource.

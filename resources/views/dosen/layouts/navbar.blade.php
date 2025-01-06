@@ -4,7 +4,7 @@
             <!-- LOGO -->
             <div class="bg-primary">
             <div class="navbar-brand-box bg-primary">
-                <a href="{{ route('dashboard') }}" class="logo bg-primary">
+                <a href="{{ route('dashboardd') }}" class="logo bg-primary">
                     <span class="logo-sm">
                         <div class="d-flex justify-center align-items-center mt-3">
                             <img src="{{ asset('assets/images/logo-finalease-removebg-preview.png') }}" alt=""

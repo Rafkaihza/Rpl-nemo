@@ -4,10 +4,12 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MhsDashboardController;
 use App\Http\Controllers\Admin\DosenController;
-use App\Http\Controllers\admin\MahasiswaController;
+use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BimbinganController;
 use App\Http\Controllers\Dosen\JadwalController;
+use App\Http\Controllers\Dosen\SetujuController;
+use App\Http\Controllers\Mahasiswa\BimbinganMahasiswaController;
 use App\Models\Dosen;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectRole;
@@ -76,6 +78,8 @@ Route::middleware(['auth', RedirectRole::class . ':mahasiswa'])
     ->prefix('mahasiswa')
     ->group(function () {
         Route::get('/', [MhsDashboardController::class, 'index'])->name('welcome');
+        Route::get('/bimbingan', [MhsDashboardController::class, 'index'])->name('bimbingans.index');
+        Route::post('/bimbingan', [BimbinganMahasiswaController::class, 'store'])->name('bimbingans.store');
 
 });
 require __DIR__ . '/auth.php';

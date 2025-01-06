@@ -34,21 +34,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($bimbingans as $bmb)
+                                            @foreach ($approvedBimbingans as $bimbingan)
                                                 <tr class="text-center bg-primary text-white">
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $bmb->tanggal }}</td>
-                                                    <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</td>
-                                                    <td>{{ $bmb->dosen->nama }}</td>
-                                                    <td>{{ $bmb->mahasiswa->nama }}</td>
-                                                    <td>{{ $bmb->lokasi }}</td>
-                                                    <td>{{ $bmb->topik }}</td>
+                                                    <td>{{ $bimbingan->tanggal }}</td>
+                                                    <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $bimbingan->jam)->format('H:i') }}</td>
+                                                    <td>{{ $bimbingan->dosen->nama }}</td>
+                                                    <td>{{ $bimbingan->mahasiswa->nama }}</td>
+                                                    <td>{{ $bimbingan->lokasi }}</td>
+                                                    <td>{{ $bimbingan->topik }}</td>
                                                     <td>
-                                                        <a href="{{ route('jadwals.edit', $bmb->id) }}"
+                                                        <a href="{{ route('jadwals.edit', $bimbingan->id) }}"
                                                             onclick="if(!confirm('Yakin Mau di Edit nih?')) {return false}"
                                                             class="btn btn-primary btn-md"><i
                                                                 class="fa-solid fa-wrench fa-rotate-270"></i></a>
-                                                        <form action="{{ route('jadwals.destroy', $bmb->id) }}"
+                                                        <form action="{{ route('jadwals.destroy', $bimbingan->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
@@ -73,6 +73,7 @@
                                     <div class="col-sm-12">
                                         <table id="example2" class="table table-primary" aria-describedby="example2_info">
                                             <thead class="text-center">
+                                                <h2 class="display-6 text-black">Pengajuan Bimbingan</h2>
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Tanggal Bimbingan</th>

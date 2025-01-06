@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FinalEase - Landing Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+  <link href="{{asset('assets/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css">
+  <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
 
   <style>
     body, html {
@@ -254,7 +259,6 @@
         <h5>{{ Auth::user()->name }}</h5>
         <p>NIM: {{ Auth::user()->mahasiswa->nim }}</p>
         <p>Jurusan: {{ Auth::user()->mahasiswa->jurusan }}</p>
-        <p>Dosen Pembimbing: Zeki, S.KOM</p>
         <div class="progress-bar-container">
           <p>Bar Progress Tugas Akhir</p>
           <div class="progress">
@@ -262,7 +266,139 @@
           </div>
         </div>
       </div>
+
+      <div class="info-card-container" style="position: relative; border-radius: 5px; padding: 15px; background-color:white; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <div class="info-card" style="max-height: 350px; overflow-y: scroll;">
+            @forelse ($bimbingans as $bmb)
+                <h5>Pengajuan Jadwal Bimbingan</h5>
+                <p>Tanggal Bimbingan: {{ $bmb->tanggal }}</p>
+                <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</p>
+                <p>Dosen: {{ $bmb->dosen->nama }}</p>
+                <p>Mahasiswa: {{ $bmb->mahasiswa->nama }}</p>
+                <p>Lokasi: {{ $bmb->lokasi }}</p>
+                <p>Topik: {{ $bmb->topik }}</p>
+                <p>Status: 
+                    <button type="button" class="btn btn-sm text-white" 
+                        style="pointer-events: none; background-color: 
+                        {{ $bmb->status === 'setuju' ? '#28a745' : ($bmb->status === 'pending' ? '#ffc107' : '#dc3545') }};">
+                        {{ $bmb->status }}
+                    </button>
+                </p>
+                <hr>
+            @empty
+                <p>Tidak ada pengajuan jadwal bimbingan yang ditemukan.</p>
+            @endforelse
+        </div>
+        <div class="fixed-footer" style="text-align: center; margin-top: 10px;">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                + Ajukan Bimbingan
+            </button>
+        </div>
     </div>
+
+    <div class="info-card-container" style="position: relative; border-radius: 5px; padding: 15px; background-color:white; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <div class="info-card" style="max-height: 350px; overflow-y: scroll;">
+          @forelse ($bimbingans as $bmb)
+              <h5>Jadwal Bimbingan</h5>
+              <p>Tanggal Bimbingan: {{ $bmb->tanggal }}</p>
+              <p>Waktu: {{ \Carbon\Carbon::createFromFormat('H:i:s', $bmb->jam)->format('H:i') }}</p>
+              <p>Dosen: {{ $bmb->dosen->nama }}</p>
+              <p>Mahasiswa: {{ $bmb->mahasiswa->nama }}</p>
+              <p>Lokasi: {{ $bmb->lokasi }}</p>
+              <p>Topik: {{ $bmb->topik }}</p>
+              <hr>
+          @empty
+              <p>Tidak ada jadwal bimbingan yang ditemukan.</p>
+          @endforelse
+      </div>
+  </div>
+    
+    
+    
+    
+    
+
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Pengajuan Bimbingan</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+              <form action="{{ route('bimbingans.store') }}" method="POST">
+                  <div class="alert alert-danger">
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+                  @csrf
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="tanggal" class="col-2 col-form-label">Tanggal</label>
+                      <div class="col-10">
+                          <input id="tanggal" name="tanggal"
+                              type="date" class="form-control" required="required">
+                      </div>
+                  </div>
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="jam" class="col-2 col-form-label">Jam Bimbingan</label>
+                      <div class="col-10">
+                          <input id="jam" name="jam"
+                              type="time" required="required" class="form-control">
+                      </div>
+                  </div>
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="dosen_id" class="col-2 col-form-label">Nama Dosen</label>
+                      <div class="col-10">
+                          <select name="dosen_id" id="dosen_id" class="form-control">
+                              <option value="" hidden>Pilih Dosen</option>
+                              @foreach ($dosens as $dsn)
+                                  <option value="{{ $dsn->id }}">{{ $dsn->nama }}</option>
+                              @endforeach
+                          </select>
+                      </div>
+                  </div>
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="mahasiswa_id" class="col-2 col-form-label">Nama Mahasiswa</label>
+                      <div class="col-10">
+                          <select name="mahasiswa_id" id="mahasiswa_id" class="form-control">
+                              <option value="" hidden>Pilih Mahasiswa</option>
+                              @foreach ($mahasiswas as $mhs)
+                                  <option value="{{ $mhs->id }}">{{ $mhs->nama }}</option>
+                              @endforeach
+                          </select>
+                      </div>
+                  </div>
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="lokasi" class="col-2 col-form-label">Lokasi</label>
+                      <div class="col-10">
+                          <input id="lokasi" name="lokasi"
+                              type="text" required="required" class="form-control">
+                      </div>
+                  </div>
+                  <div class="form-group row mb-3 align-items-center">
+                      <label for="topik" class="col-2 col-form-label">Topik</label>
+                      <div class="col-10">
+                          <input id="topik" name="topik"
+                              type="text" required="required" class="form-control">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Footer -->
     <footer>
@@ -295,5 +431,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 </html>
